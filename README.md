@@ -54,44 +54,72 @@
             width: 100%; padding: 8px; margin-bottom: 8px;
             background: #000; color: white; border: 1px solid var(--gold);
             border-radius: 10px; font-size: 13px; box-sizing: border-box;
+            transition: 0.3s;
+        }
+
+        select:focus, input:focus {
+            outline: none;
+            border-color: #fff;
+            box-shadow: 0 0 8px rgba(255, 215, 0, 0.3);
         }
 
         .painel-botoes { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
 
         button {
-            padding: 10px 5px; border-radius: 10px; border: none;
+            padding: 11px 5px; border-radius: 10px; border: none;
             color: white; font-weight: bold; cursor: pointer; font-size: 10px;
-            text-transform: uppercase; transition: 0.3s;
+            text-transform: uppercase; transition: transform 0.2s, background 0.3s, box-shadow 0.3s;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
         }
 
-        .btn-blue { background: #1e3c72; }
-        .btn-purple { background: #4b0082; }
-        .btn-brown { background: #8b4513; }
-        .btn-red { background: #b22222; }
+        button:active {
+            transform: scale(0.96);
+        }
+
+        .btn-blue { background: linear-gradient(135deg, #1e3c72, #2a5298); }
+        .btn-blue:hover { box-shadow: 0 0 10px rgba(30, 60, 114, 0.5); }
+
+        .btn-purple { background: linear-gradient(135deg, #4b0082, #6a0dad); }
+        .btn-purple:hover { box-shadow: 0 0 10px rgba(75, 0, 130, 0.5); }
+
+        .btn-brown { background: linear-gradient(135deg, #8b4513, #a0522d); }
+        .btn-brown:hover { box-shadow: 0 0 10px rgba(139, 69, 19, 0.5); }
+
+        .btn-red { background: linear-gradient(135deg, #b22222, #dc143c); }
+        .btn-red:hover { box-shadow: 0 0 10px rgba(178, 34, 34, 0.5); }
 
         .grade-loterias { display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px; margin-top: 5px; }
         .btn-lot { background: #2f3542; font-size: 8px; padding: 8px 2px; }
+        .btn-lot:hover { background: #57606f; border: 1px solid var(--gold); }
 
-        .grade-amor { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; }
+        .grade-amor { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5px; }
         .btn-signo-amor {
-            padding: 6px 2px; font-size: 8px; border-radius: 8px;
+            padding: 7px 2px; font-size: 9px; border-radius: 8px;
             border: 1px solid rgba(255, 215, 0, 0.2); background: rgba(255, 255, 255, 0.05);
-            color: white; cursor: pointer;
+            color: white; cursor: pointer; transition: 0.2s;
         }
+        .btn-signo-amor:hover { background: rgba(255, 215, 0, 0.15); border-color: var(--gold); }
 
         #resultado {
             margin-top: 12px; padding: 12px; background: rgba(0, 0, 0, 0.5);
             border-radius: 15px; border-left: 4px solid var(--gold);
             font-size: 13px; line-height: 1.6; color: #efefef; text-align: justify;
+            animation: revelarTexto 0.4s ease-out forwards;
         }
 
         .num-bola {
             display: inline-block; width: 28px; height: 28px; line-height: 28px;
             background: var(--gold); color: #000; border-radius: 50%;
             margin: 3px; font-weight: bold; font-size: 11px; text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.3);
         }
 
         .footer { margin-top: 10px; font-size: 10px; color: #555; text-align: center; }
+
+        @keyframes revelarTexto {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
     </style>
 </head>
 <body>
@@ -108,12 +136,18 @@
         <label>MEU SIGNO:</label>
         <select id="signo" onchange="ativarPortal()">
             <option value="" selected disabled>Escolha seu signo...</option>
-            <option value="Áries">Áries</option><option value="Touro">Touro</option>
-            <option value="Gêmeos">Gêmeos</option><option value="Câncer">Câncer</option>
-            <option value="Leão">Leão</option><option value="Virgem">Virgem</option>
-            <option value="Libra">Libra</option><option value="Escorpião">Escorpião</option>
-            <option value="Sagitário">Sagitário</option><option value="Capricórnio">Capricórnio</option>
-            <option value="Aquário">Aquário</option><option value="Peixes">Peixes</option>
+            <option value="Áries">Áries</option>
+            <option value="Touro">Touro</option>
+            <option value="Gêmeos">Gêmeos</option>
+            <option value="Câncer">Câncer</option>
+            <option value="Leão">Leão</option>
+            <option value="Virgem">Virgem</option>
+            <option value="Libra">Libra</option>
+            <option value="Escorpião">Escorpião</option>
+            <option value="Sagitário">Sagitário</option>
+            <option value="Capricórnio">Capricórnio</option>
+            <option value="Aquário">Aquário</option>
+            <option value="Peixes">Peixes</option>
         </select>
 
         <div class="painel-botoes">
@@ -145,137 +179,84 @@
             <label style="color:#9b59b6">🕊️ VIDÊNCIA ESPIRITUAL DO ALÉM</label>
             <input type="text" id="meuNome" placeholder="Seu nome (Quem lê)...">
             <input type="text" id="nomeParente" placeholder="Nome de quem partiu...">
-            <button class="btn-purple" style="width:100%; padding: 8px;" onclick="sortearMensagemAlem()">RECEBER MENSAGEM DETALHADA</button>
+            <button class="btn-purple" onclick="realizarVidencia()">🔮 CONSULTAR VIDÊNCIA</button>
         </div>
     </div>
 
-    <div class="footer">TikTok: @vandofer0 | 2026 - Franco da Rocha</div>
+    <div class="footer">Portal do Vando Astros © Todos os direitos reservados</div>
 
     <script>
-        const signosList = ["Áries", "Touro", "Gêmeos", "Câncer", "Leão", "Virgem", "Libra", "Escorpião", "Sagitário", "Capricórnio", "Aquário", "Peixes"];
-        const grid = document.getElementById('gradeAmor');
-        signosList.forEach(s => {
-            let b = document.createElement('button');
-            b.className = 'btn-signo-amor';
-            b.innerText = s.substring(0,3).toUpperCase();
-            b.onclick = () => combinarAmor(s);
-            grid.appendChild(b);
-        });
-
-        const respostasLongas = {
-            destino: [
-                "O alinhamento planetário de hoje sugere que uma porta que esteve trancada por meses finalmente começará a abrir. Você sentirá um impulso de renovação técnica e espiritual. Fique atento aos sinais em conversas casuais e e-mails inesperados.",
-                "As correntes cósmicas indicam que seu propósito está ligado a uma grande transformação estrutural. O momento pede que você confie mais na sua intuição do que na lógica fria. Existe uma energia de justiça sendo feita em seu nome.",
-                "O universo está a desenhar um novo mapa para a sua jornada. Prepare-se para um encontro que mudará a sua percepção sobre o sucesso material. O destino hoje favorece a introspecção para entender sua verdadeira força."
-            ],
-            futuro: [
-                "Nos próximos dois anos, o seu campo astral indica uma ascensão meteórica em projetos de inovação. A sua capacidade de automação atrairá parcerias internacionais sólidas e duradouras. O futuro reserva estabilidade para sua família.",
-                "A sua trajetória futura aponta para um legado de partilha. Vejo o seu nome associado a uma plataforma ou método que ajudará muitas pessoas. A maturidade trará uma calma financeira e viagens de exploração.",
-                "As estrelas mostram uma mudança radical no seu estilo de vida para melhor. Verá as pessoas próximas prosperarem sob a sua orientação direta. A saúde será restaurada através de novos hábitos que começará a implementar."
-            ],
-            mensal: [
-                "Este mês será um divisor de águas. Na primeira quinzena, você lidará com burocracias pendentes que serão resolvidas. A partir do dia 15, uma nova energia de criatividade tomará conta de si para finalizar projetos parados.",
-                "O foco deste mês é a limpeza e renovação. No trabalho, surgirá um desafio técnico que exigirá perícia, mas o resultado será reconhecimento financeiro. Mantenha a discrição sobre os seus planos até que estejam concretizados.",
-                "A energia lunar deste mês favorece as comunicações e o comércio. Sentirá uma conexão mais forte com o plano espiritual, recebendo insights valiosos. Uma notícia vinda de longe trará um novo sorriso e esperança."
-            ],
-            financeiro: [
-                "O fluxo de abundância está a reorganizar-se a seu favor. Verá uma entrada de capital inesperada vinda de uma antiga dívida ou bónus. É um período excelente para reinvestir em ferramentas de produtividade.",
-                "A prosperidade financeira este mês virá através da sua capacidade de resolver problemas complexos. O universo recompensará a sua generosidade intelectual com lucros sólidos. Uma oportunidade de investimento surgirá em breve.",
-                "As estrelas indicam que o seu dinheiro começará a trabalhar para si. Sistemas passivos de rendimento e automação financeira serão as suas melhores aliadas. O momento é de plantar para colher em dobro nos próximos meses."
-            ]
-        };
-
-        const bancoDadosBase = {
-            "Áries": { cor: "VERMELHO", hex: "#eb4d4b", pedra: "Rubi" },
-            "Touro": { cor: "VERDE", hex: "#2ecc71", pedra: "Esmeralda" },
-            "Gêmeos": { cor: "AMARELO", hex: "#f1c40f", pedra: "Citrino" },
-            "Câncer": { cor: "BRANCO", hex: "#ecf0f1", pedra: "Pedra da Lua" },
-            "Leão": { cor: "DOURADO", hex: "#f39c12", pedra: "Topázio" },
-            "Virgem": { cor: "AZUL", hex: "#2980b9", pedra: "Safira" },
-            "Libra": { cor: "ROSA", hex: "#ff9ff3", pedra: "Quartzo Rosa" },
-            "Escorpião": { cor: "VINHO", hex: "#c0392b", pedra: "Obsidiana" },
-            "Sagitário": { cor: "PÚRPURA", hex: "#8e44ad", pedra: "Lápis Lazúli" },
-            "Capricórnio": { cor: "MARROM", hex: "#7f8c8d", pedra: "Ônix" },
-            "Aquário": { cor: "TURQUESA", hex: "#00d2d3", pedra: "Turquesa" },
-            "Peixes": { cor: "VIOLETA", hex: "#a29bfe", pedra: "Ametista" }
+        const dadosSignos = {
+            "Áries": { cor: "Vermelho", hex: "#ff4757", pedra: "Jaspe", destino: "Sua liderança abrirá caminhos inesperados hoje.", futuro: "Grandes mudanças profissionais nos próximos meses.", mensal: "Este mês exige foco na sua paciência.", financeiro: "Momento ideal para evitar gastos por impulso." },
+            "Touro": { cor: "Verde", hex: "#2ed573", pedra: "Quartzo Verde", destino: "A estabilidade que você procura virá da persistência.", futuro: "Uma proposta de negócio sólida surgirá.", mensal: "Colha os frutos do que plantou nos últimos tempos.", financeiro: "Entrada de dinheiro extra prevista em breve." },
+            "Gêmeos": { cor: "Amarelo", hex: "#ffa502", pedra: "Olho de Tigre", destino: "Sua comunicação resolverá um antigo mal-entendido.", futuro: "Viagens e novas conexões transformarão sua visão.", mensal: "Mês movimentado com muitas novidades sociais.", financeiro: "Analise bem novas parcerias financeiras." },
+            "Câncer": { cor: "Prata", hex: "#ced6e0", pedra: "Pedra da Lua", destino: "Sua intuição está aguçada, confie no seu coração.", futuro: "Momento de harmonia e fortalecimento familiar.", mensal: "Fase de profunda renovação emocional.", financeiro: "Proteja seus bens e evite emprestar dinheiro agora." },
+            "Leão": { cor: "Dourado", hex: "#ffa502", pedra: "Âmbar", destino: "Seu brilho natural atrairá uma excelente oportunidade.", futuro: "Reconhecimento merecido no seu ambiente de trabalho.", mensal: "Mês de grande poder pessoal e magnetismo.", financeiro: "Sua sorte em investimentos está em alta." },
+            "Virgem": { cor: "Azul Marinho", hex: "#1e3c72", pedra: "Cianita Azul", destino: "A organização de hoje trará a paz de espírito de amanhã.", futuro: "Projetos antigos finalmente sairão do papel.", mensal: "Foco total na saúde e na rotina produtiva.", financeiro: "Economias rendendo frutos positivos." },
+            "Libra": { cor: "Rosa", hex: "#ff7675", pedra: "Quartzo Rosa", destino: "O equilíbrio retornará para as suas relações.", futuro: "Novas amizades trarão alegrias duradouras.", mensal: "Período ideal para investir no seu bem-estar.", financeiro: "A estabilidade financeira será mantida com sabedoria." },
+            "Escorpião": { cor: "Preto", hex: "#2f3542", pedra: "Obsidiana", destino: "Uma transformação necessária começará de dentro para fora.", futuro: "Superação definitiva de um obstáculo do passado.", mensal: "Mês de mistérios desvendados e forte poder espiritual.", financeiro: "Mudanças benéficas na sua fonte de renda." },
+            "Sagitário": { cor: "Púrpura", hex: "#8e44ad", pedra: "Sodalita", destino: "Sua sede de aventura te levará a uma nova descoberta.", futuro: "Expansão de horizontes e novos conhecimentos.", mensal: "Otimismo em alta guiará suas decisões este mês.", financeiro: "Abundância batendo à sua porta, aproveite." },
+            "Capricórnio": { cor: "Marrom", hex: "#747d8c", pedra: "Ônix", destino: "O trabalho duro e constante trará a vitória desejada.", futuro: "Conquista de um bem durável ou posição de destaque.", mensal: "Fase de colheita profissional e foco em metas.", financeiro: "Gerenciamento exemplar trazendo estabilidade total." },
+            "Aquário": { cor: "Azul Claro", hex: "#70a1ff", pedra: "Turquesa", destino: "Suas ideias inovadoras farão a diferença ao seu redor.", futuro: "Projetos revolucionários receberão apoio.", mensal: "Mês marcado pela liberdade e originalidade.", financeiro: "Retornos financeiros vindos de fontes alternativas." },
+            "Peixes": { cor: "Violeta", hex: "#a55eea", pedra: "Ametista", destino: "Conecte-se com o plano espiritual para encontrar respostas.", futuro: "Realização de um sonho antigo que parecia distante.", mensal: "Mês de forte inspiração artística e sensibilidade.", financeiro: "Siga sua intuição antes de fechar qualquer contrato." }
         };
 
         function ativarPortal() {
-            const s = document.getElementById('signo').value;
-            const info = bancoDadosBase[s];
-            document.getElementById('nomeCor').innerText = info.cor;
-            document.getElementById('circuloCor').style.backgroundColor = info.hex;
-            document.getElementById('nomePedra').innerText = "PEDRA: " + info.pedra;
+            const signo = document.getElementById("signo").value;
+            if(!signo) return;
+            
+            const info = dadosSignos[signo];
+            document.getElementById("nomeCor").innerText = info.cor;
+            document.getElementById("circuloCor").style.backgroundColor = info.hex;
+            document.getElementById("nomePedra").innerText = "PEDRA: " + info.pedra;
+            document.getElementById("resultado").innerText = "Portal Ativado para " + signo + "! Selecione uma consulta acima.";
+            
+            const gradeAmor = document.getElementById("gradeAmor");
+            gradeAmor.innerHTML = "";
+            Object.keys(dadosSignos).forEach(s => {
+                let btn = document.createElement("button");
+                btn.className = "btn-signo-amor";
+                btn.innerText = s.substring(0,3).toUpperCase();
+                btn.onclick = () => {
+                    document.getElementById("resultado").innerHTML = `<strong>Afinidade Amorosa (${signo} + ${s}):</strong> Uma combinação única com forte magnetismo e lições importantes para o crescimento mútuo.`;
+                };
+                gradeAmor.appendChild(btn);
+            });
         }
 
         function mostrarResposta(tipo) {
-            const s = document.getElementById('signo').value;
-            if(!s) return alert("Selecione seu signo!");
-            const lista = respostasLongas[tipo];
-            const resposta = lista[Math.floor(Math.random() * lista.length)];
-            const titulos = { destino: "🌟 DESTINO", futuro: "🚀 FUTURO", mensal: "📜 MENSAL", financeiro: "💰 FINANCEIRO" };
-            document.getElementById('resultado').innerHTML = `<h3>${titulos[tipo]}</h3><p>${resposta}</p>`;
-        }
-
-        function gerarLoteria(tipo) {
-            if(!document.getElementById('signo').value) return alert("Selecione seu signo!");
-            let html = `<h3>🎰 ${tipo.toUpperCase()}</h3>`;
-            if(tipo === 'Mega-Sena') sortearNumeros(6, 60).forEach(n => html += `<span class="num-bola">${n}</span>`);
-            else if(tipo === 'Dupla Sena') {
-                html += `<p style='font-size:9px'>1º SORTEIO:</p>`; sortearNumeros(6, 50).forEach(n => html += `<span class="num-bola">${n}</span>`);
-                html += `<p style='font-size:9px'>2º SORTEIO:</p>`; sortearNumeros(6, 50).forEach(n => html += `<span class="num-bola" style='background:#4b0082; color:#fff'>${n}</span>`);
-            } 
-            else if(tipo === 'Lotofácil') sortearNumeros(15, 25).forEach(n => html += `<span class="num-bola" style='width:22px; height:22px; line-height:22px; font-size:10px;'>${n}</span>`);
-            else if(tipo === 'Lotomania') {
-                sortearNumeros(20, 100).forEach(n => {
-                    html += `<span class="num-bola" style='width:22px; height:22px; line-height:22px; font-size:10px;'>${n === 100 ? '00' : n}</span>`;
-                });
+            const signo = document.getElementById("signo").value;
+            if(!signo) {
+                document.getElementById("resultado").innerText = "Por favor, selecione seu signo primeiro!";
+                return;
             }
-            else if(tipo === 'Quina') sortearNumeros(5, 80).forEach(n => html += `<span class="num-bola">${n}</span>`);
-            document.getElementById('resultado').innerHTML = html;
+            document.getElementById("resultado").innerHTML = `<strong>${tipo.toUpperCase()}:</strong> ${dadosSignos[signo][tipo]}`;
         }
 
-        function sortearNumeros(qtd, max) {
-            let n = []; while(n.length < qtd) { 
-                let r = Math.floor(Math.random() * max) + 1; 
-                if(!n.includes(r)) n.push(r); 
+        function gerarLoteria(jogo) {
+            let num = [];
+            let qtd = jogo === 'Mega-Sena' ? 6 : jogo === 'Dupla Sena' ? 6 : jogo === 'Lotofácil' ? 15 : jogo === 'Lotomania' ? 20 : 5;
+            let max = jogo === 'Lotofácil' ? 25 : jogo === 'Lotomania' ? 99 : jogo === 'Quina' ? 80 : 60;
+            
+            while(num.length < qtd) {
+                let n = Math.floor(Math.random() * max) + 1;
+                if(!num.includes(n)) num.push(n);
             }
-            return n.sort((a,b) => a-b);
+            num.sort((a,b) => a-b);
+            
+            let bolas = `<strong>Números da Sorte (${jogo}):</strong><br><br>`;
+            num.forEach(n => { bolas += `<span class="num-bola">${n}</span>`; });
+            document.getElementById("resultado").innerHTML = bolas;
         }
 
-        function combinarAmor(parceiro) {
-            const meu = document.getElementById('signo').value;
-            if(!meu) return alert("Selecione seu signo!");
-            
-            const frasesAmorDetalhadas = [
-                `A afinidade entre **${meu}** e **${parceiro}** é governada por uma conexão de almas antigas. O mapa astral indica que vocês compartilham valores fundamentais que servem de âncora em momentos de tempestade. Existe uma química intelectual poderosa aqui; vocês não apenas se amam, mas se admiram profundamente. O universo sugere que este é o momento ideal para planejar algo grande a dois, pois a sorte de um transbordará para o outro, fortalecendo os laços e garantindo uma cumplicidade que poucos casais conseguem alcançar.`,
-                
-                `Para o casal **${meu}** e **${parceiro}**, a vibração atual é de renovação e cura. Se houve desentendimentos no passado, as estrelas estão alinhadas para que o perdão e a compreensão mútua floresçam. A afinidade de vocês é magnética e atrai prosperidade para o ambiente doméstico. Vejo uma fase onde pequenos gestos de carinho terão um impacto gigante na estrutura da relação. A comunicação fluirá de forma mais leve, e vocês descobrirão novos interesses em comum que trarão uma chama de paixão que parecia adormecida.`,
-                
-                `A ligação espiritual entre **${meu}** e **${parceiro}** está em um pico de 95% de compatibilidade vibracional. Vocês funcionam como um espelho um para o outro, ajudando na evolução mútua. Esta é uma relação protegida por mentores de luz, onde a lealdade é o pilar principal. O destino reserva uma surpresa agradável ligada a uma viagem ou mudança de ares que fortalecerá ainda mais essa união. Abram o coração para o diálogo sem medo, pois a vulnerabilidade entre vocês é o que os torna invencíveis perante o mundo exterior.`
-            ];
-            
-            const f = frasesAmorDetalhadas[Math.floor(Math.random() * frasesAmorDetalhadas.length)];
-            document.getElementById('resultado').innerHTML = `<h3>💘 AFINIDADE PROFUNDA</h3><p>${f}</p>`;
-        }
-
-        function sortearMensagemAlem() {
-            const para = document.getElementById('meuNome').value.trim();
-            const de = document.getElementById('nomeParente').value.trim();
-            if(!de || !para) return alert("Preencha os dois nomes.");
-            
-            const msgs = [
-                `"${para}, aqui quem fala é ${de}. Sinto que seu coração tem estado inquieto. Saiba que do lado de cá, estou intercedendo por você. Aquela preocupação será resolvida até o final deste ciclo. Vi o seu esforço e isso será recompensado com uma notícia vinda de um papel importante. Não perca a fé."`,
-                `"${para}, receba o abraço de luz de ${de}. Estive ao seu lado em todos os momentos. Quero que saiba que a jornada que você trilha agora dará frutos que alimentarão gerações. Vejo uma proteção espiritual dourada sobre sua casa. Uma vitória financeira se aproxima."`,
-                `"${para}, ${de} te envia esta mensagem. Pare de carregar culpas que não te pertencem. O plano espiritual celebra sua vida. Existe uma nova fase de saúde e vitalidade sendo derramada sobre você. Sinta o calor no peito, é o sinal da minha presença."`
-            ];
-            
-            document.getElementById('resultado').innerHTML = `
-                <div style="border: 2px solid #9b59b6; padding: 15px; border-radius: 15px; background: rgba(75, 0, 130, 0.2);">
-                    <h3 style="color:#9b59b6; text-align:center; margin-top:0;">🕊️ REVELAÇÃO ESPIRITUAL</h3>
-                    <p style="font-size:12px; color:var(--gold); border-bottom: 1px solid #333; padding-bottom:5px;"><b>CONEXÃO:</b> ${de.toUpperCase()} para ${para.toUpperCase()}</p>
-                    <p style="font-style: italic; line-height:1.7;">${msgs[Math.floor(Math.random() * msgs.length)]}</p>
-                </div>`;
+        function realizarVidencia() {
+            const nome = document.getElementById("meuNome").value;
+            const parente = document.getElementById("nomeParente").value;
+            if(!nome || !parente) {
+                document.getElementById("resultado").innerText = "Preencha ambos os nomes para receber a mensagem espiritual.";
+                return;
+            }
+            document.getElementById("resultado").innerHTML = `<strong>Conexão Astral para ${nome}:</strong><br><br>"${nome}, aqui é ${parente}. Não pense que suas lágrimas e orações no calado da noite não foram ouvidas. Eu estou acompanhando cada passo seu. A resposta que você procura virá através de um sonho claro nos próximos dias. Continue firme, estou te guardando."`;
         }
     </script>
 </body>
